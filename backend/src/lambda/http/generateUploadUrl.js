@@ -1,6 +1,7 @@
 import middy from '@middy/core'
 import cors from '@middy/http-cors'
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import httpErrorHandler from '@middy/http-error-handler'
 import { v4 as uuidv4 } from 'uuid'
 import { todoExists, updateAttachmentUrl } from '../../businessLogic/todos.mjs'
@@ -31,7 +32,7 @@ export const handler = middy()
     const jwtToken = split[1]
     const userId = parseUserId(jwtToken)
 
-    const validTodoId = await todoExists(todoId)
+    const validTodoId = await todoExists(userId, todoId)
 
     if (!validTodoId) {
       return {
@@ -41,7 +42,7 @@ export const handler = middy()
     }
 
     const imageId = uuidv4()
-    const attachmentUrl = `https://${this.bucketName}.s3.amazonaws.com/${imageId}`
+    const attachmentUrl = `https://${bucketName}.s3.amazonaws.com/${imageId}`
     await updateAttachmentUrl(userId, todoId, attachmentUrl)
     const url = await getUploadUrl(imageId)
 

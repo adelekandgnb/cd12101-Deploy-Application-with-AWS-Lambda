@@ -29,7 +29,14 @@ export const handler = middy()
     await updateTodo(userId, todoId, todoToUpdate)
 
     return {
-      statusCode: 201,
+      statusCode: 200,
+      body: JSON.stringify({
+        item: {
+          name: todoToUpdate.name,
+          dueDate: todoToUpdate.dueDate,
+          done: todoToUpdate.done,
+        }
+      })
     }
   })
 
