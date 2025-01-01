@@ -23,9 +23,13 @@ export class TodoDB {
     this.todosCreatedAtIndex = todosCreatedAtIndex
   }
 
-  async getAllTodos() {
+  async getAllTodos(userId) {
     const command = new ScanCommand({
-      TableName: this.todosTable
+      TableName: this.todosTable,
+      FilterExpression: "userId = :userId",
+      ExpressionAttributeValues: {
+        ":userId": { S: userId },
+      },
     })
 
     const response = await this.client.send(command)

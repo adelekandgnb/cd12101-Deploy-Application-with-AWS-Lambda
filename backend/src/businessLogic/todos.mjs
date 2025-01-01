@@ -2,8 +2,8 @@ import { TodoDB } from '../dataLayer/todoDB.mjs'
 
 const todoDB = new TodoDB()
 
-export async function getAllTodos() {
-  return todoDB.getAllTodos()
+export async function getAllTodos(userId) {
+  return todoDB.getAllTodos(userId)
 }
 
 export async function createTodo(createTodoRequest, userId) {

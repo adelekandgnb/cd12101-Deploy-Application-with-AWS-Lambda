@@ -10,6 +10,7 @@ export function NewTodoInput({ onNewTodo }) {
   const { getAccessTokenSilently } = useAuth0()
 
   const onTodoCreate = async (event) => {
+    if(newTodoName === '') return
     try {
       const accessToken = await getAccessTokenSilently()
       const dueDate = calculateDueDate()
@@ -18,6 +19,7 @@ export function NewTodoInput({ onNewTodo }) {
         dueDate
       })
       onNewTodo(createdTodo)
+      setNewTodoName('')
     } catch (e) {
       console.log('Failed to created a new TODO', e)
       alert('Todo creation failed')
