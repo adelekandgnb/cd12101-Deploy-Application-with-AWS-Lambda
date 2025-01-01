@@ -1,4 +1,5 @@
 import Axios from 'axios'
+import { transformDynamoDBItems } from '../utils/transformDBData'
 
 export async function getTodos(idToken) {
   console.log('Fetching todos')
@@ -12,8 +13,8 @@ export async function getTodos(idToken) {
       }
     }
   )
-  console.log('Todos:', response.data)
-  return response.data.items
+  
+  return transformDynamoDBItems(response.data.items)
 }
 
 export async function createTodo(idToken, newTodo) {
